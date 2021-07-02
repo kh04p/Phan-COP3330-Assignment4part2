@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 
 group 'org.COP3330'
@@ -19,4 +20,13 @@ test {
     useJUnitPlatform()
 }
 
-mainClassName = 'App'
+javafx {
+    version = "16"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+test {
+    useJUnitPlatform()
+}
+
+mainClassName = 'ucf.assignments.todo'
