@@ -11,16 +11,17 @@ public class openController {
     private TextField fileNameField;
 
     @FXML
-    private Button selectFileButton;
+    private Button openFileButton;
 
     @FXML
     void fileName(ActionEvent event) {
-    //User will be prompted to enter the name or path of the file they wish to open
+    //User will be prompted to enter the path of the file they wish to open
     }
 
     @FXML
-    void selectFile(ActionEvent event) {
+    void openFile(ActionEvent event) {
     //User can hit select once they are done typing
+    //File path will be saved as String and passed
     }
 
 }

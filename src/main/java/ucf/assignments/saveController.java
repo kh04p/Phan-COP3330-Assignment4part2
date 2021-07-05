@@ -11,16 +11,17 @@ public class saveController {
     private TextField fileNameField;
 
     @FXML
-    private Button selectFileButton;
+    private Button saveFileButton;
 
     @FXML
     void fileName(ActionEvent event) {
-
+    //User will be prompted to enter the path they wish to save at
     }
 
     @FXML
-    void selectFile(ActionEvent event) {
-
+    void saveFile(ActionEvent event) {
+    //User can hit select once they are done typing
+    //File path will be saved as String and passed back
     }
 
 }
