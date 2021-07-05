@@ -6,24 +6,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+
+import javax.swing.*;
 
 public class editController {
-    //TextField variables will contain information obtained from current list but user can enter in new value and hit "Edit" buttons to save.
 
     @FXML
     private CheckBox markCompletedButton;
 
     @FXML
-    private TextField dueDate;
+    private TextField dueDateField;
 
     @FXML
-    private TextArea description;
-
-    @FXML
-    private TextField todoNameField;
-
-    @FXML
-    private Button saveTodoNameButton;
+    private TextArea descriptionField;
 
     @FXML
     private Button editDateButton;
@@ -32,71 +28,96 @@ public class editController {
     private Button editDescriptionButton;
 
     @FXML
-    private Button exportListButton;
+    private TextField todoNameField;
+
+    @FXML
+    private Button editTodoNameButton;
 
     @FXML
     private Button newTodoButton;
 
     @FXML
-    private TextField nameListButton;
+    private TextField nameListField;
 
     @FXML
     private Button saveListButton;
 
     @FXML
-    void editDate(ActionEvent event) {
-    //Once user selects an item, enter a desired date and hit editDateButton, program will find a Map with that name
-    //Program will find a value within that Map with the key for "date" and replaces it with user input
+    private Button exportListButton;
+
+    @FXML
+    void newTodo(ActionEvent event) {
+        //User can add a new item into list
+        //Once newTodoButton is clicked, program will create a new Map containing empty fields for name, status, due date and description
+        //User can use editDate, editDescription and markCompleted to change current item
     }
 
     @FXML
-    void editDescription(ActionEvent event) {
-    //Once user selects an item, enter a desired date and hit editDateButton, program will find a Map with that name
-    //Program will find a value within that Map with the key for "date" and replaces it with user input
+    void todoName(ActionEvent event) {
+        //User will type in desired name for item here. Otherwise, it will be populated with existing data from item.
+        //After entering desired name, user can hit editTodoNameButton to save
     }
 
     @FXML
-    void exportList(ActionEvent event) {
-    //User will be able to export current list into a file containing only this list
-    //Once clicked, user will be directed to saveTodo.fxml
-    //Path of file to be saved will be passed back
-    //Current ArrayList of Maps will be converted to String
-    //File variable will be created to create new file with desired name
-    //BufferedWriter will be used to write String to new file and save
-    //Return confirmation
+    void editTodoName(ActionEvent event) {
+        //Name will be passed from todoNameField after user hits editTodoNameButton
+        //Program will find a value within that Map with the key for "name" and replaces it with provided user input
     }
 
     @FXML
     void markCompleted(ActionEvent event) {
-    //User can mark item as completed or incomplete
-    //Once checked or unchecked, program will search current Map for value with "status" key and change its boolean state
+        //User can mark item as completed or incomplete
+        //Once checked or unchecked, program will search current Map for value with "status" key and change its boolean state
     }
 
     @FXML
-    void saveTodoName(ActionEvent event) {
-    //Once user types in name for current item, user can hit SaveTodoNameButton to save
-    //Program will search in current Map for value with "name" key and replace it with user input
+    void dueDate(ActionEvent event) {
+        //User will type in desired date here. Otherwise, it will be populated with existing data from item.
+        //After entering desired date, user can hit editDateButton to save
+    }
+
+    @FXML
+    void editDate(ActionEvent event) {
+        //Date will be passed from dueDateField after user hits editDateButton
+        //Program will find a value within that Map with the key for "date" and replaces it with provided user input
+    }
+
+    @FXML
+    void description(MouseEvent event) {
+        //User will type in desired description here. Otherwise, it will be populated with existing data from item.
+        //After entering desired description, user can hit editDescriptionButton to save
+    }
+
+    @FXML
+    void editDescription(ActionEvent event) {
+        //Description will be passed from descriptionField after user hits editDescriptionButton
+        //Program will find a value within that Map with the key for "description" and replaces it with provided String
     }
 
     @FXML
     void nameList(ActionEvent event) {
-    //User can type in name of current list or change existing name
-    //Once done typing, user can hit saveListButton to save using method saveList()
-    }
-
-    @FXML
-    void newTodo(ActionEvent event) {
-    //User can add a new item into list
-    //Once newTodoButton is clicked, program will create a new Map containing empty fields for name, status, due date and description
-    //User can use editDate, editDescription and markCompleted to change current item
+        //User will type in desired name for list here, which will be ArrayList of Maps
+        //Otherwise, it will be populated with existing data from item.
+        //After entering desired name, user can hit saveListButton to return entire ArrayList back to mainController
     }
 
     @FXML
     void saveList(ActionEvent event) {
-    //Once user is done typing in name of current list in nameList(), user can hit saveListButton
-    //Program will create a temporary variable containing the old name of the list if it was not empty
-    //Program will return both old name and ArrayList of Maps with new name back to mainController
-    //ArrayList with old name will be deleted and new ArrayList of Maps will be added to bigger ArrayList in mainController
+        //Once user is done typing in name of current list in nameList(), user can hit saveListButton
+        //Program will create a temporary variable containing the old name of the list if it was not empty
+        //Program will return both old name and ArrayList of Maps with new name back to mainController
+        //ArrayList with old name will be deleted and new ArrayList of Maps will be added to bigger ArrayList in mainController
     }
 
+    @FXML
+    void exportList(ActionEvent event) {
+        //User will be able to export current list into a file containing only this list
+        //Once clicked, user will be directed to saveTodo.fxml
+        //Path of file to be saved will be passed back
+        //Current ArrayList of Maps will be converted to String
+        //File variable will be created to create new file with desired name
+        //BufferedWriter will be used to write String to new file and save
+        //Return confirmation
+    }
 }
+

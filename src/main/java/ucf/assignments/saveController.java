@@ -20,7 +20,7 @@ public class saveController {
 
     @FXML
     void saveFile(ActionEvent event) {
-    //User can hit select once they are done typing
+    //User can hit saveFileButton once they are done typing
     //File path will be saved as String and passed back
     }
 

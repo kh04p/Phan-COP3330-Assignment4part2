@@ -20,8 +20,8 @@ public class openController {
 
     @FXML
     void openFile(ActionEvent event) {
-    //User can hit select once they are done typing
-    //File path will be saved as String and passed
+    //User can hit openFileButton once they are done typing
+    //File path will be saved as String and passed back
     }
 
 }

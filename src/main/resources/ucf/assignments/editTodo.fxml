@@ -26,12 +26,12 @@
                         <Font name="Calibri" size="14.0" />
                      </font>
                   </CheckBox>
-                  <TextField fx:id="dueDate" layoutX="14.0" layoutY="79.0" prefHeight="27.0" prefWidth="155.0" promptText="Todo Due Date">
+                  <TextField fx:id="dueDateField" layoutX="14.0" layoutY="79.0" onAction="#dueDate" prefHeight="27.0" prefWidth="155.0" promptText="Todo Due Date">
                      <font>
                         <Font name="Calibri" size="14.0" />
                      </font>
                   </TextField>
-                  <TextArea fx:id="description" layoutX="14.0" layoutY="116.0" prefHeight="131.0" prefWidth="264.0" promptText="Todo Description">
+                  <TextArea fx:id="descriptionField" layoutX="14.0" layoutY="116.0" onMouseClicked="#description" prefHeight="131.0" prefWidth="264.0" promptText="Todo Description">
                      <font>
                         <Font name="Calibri" size="14.0" />
                      </font>
@@ -46,12 +46,12 @@
                         <Font name="Calibri" size="14.0" />
                      </font>
                   </Button>
-                  <TextField fx:id="todoNameField" layoutX="14.0" layoutY="14.0" promptText="Todo Name">
+                  <TextField fx:id="todoNameField" layoutX="14.0" layoutY="14.0" onAction="#todoName" promptText="Todo Name">
                      <font>
                         <Font name="Calibri" size="14.0" />
                      </font>
                   </TextField>
-                  <Button fx:id="saveTodoNameButton" layoutX="190.0" layoutY="14.0" mnemonicParsing="false" onAction="#saveTodoName" text="Save">
+                  <Button fx:id="editTodoNameButton" layoutX="190.0" layoutY="14.0" mnemonicParsing="false" onAction="#editTodoName" text="Edit Name">
                      <font>
                         <Font name="Calibri" size="14.0" />
                      </font>
@@ -69,7 +69,7 @@
             <Font name="Calibri" size="14.0" />
          </font>
       </Button>
-      <TextField fx:id="nameListButton" layoutX="130.0" layoutY="14.0" onAction="#nameList" promptText="Name">
+      <TextField fx:id="nameListField" layoutX="130.0" layoutY="14.0" onAction="#nameList" promptText="Name">
          <font>
             <Font name="Calibri" size="14.0" />
          </font>

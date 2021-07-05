@@ -1,27 +1,53 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+class todo
+class mainController
+class openController
+class saveController
+class editController
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
+todo *-- mainController
 
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+class mainController {
+newFile(): creates new .txt file
+openFile(): opens existing .txt file
+exportFile(): exports current file to .txt file
+--
+newList(): creates new todo list within file
+openList(): opens currently selected todo list within file
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+mainController o- openController: openFile() >
+mainController o-- saveController: exportFile() >
+
+mainController --|> editController: newList() - openList() >
+editController --|> mainController: saveList() >
+
+class editController {
+newTodo(): creates new todo within current list
+nameList(): changes name of current todo list
+saveList(): returns current todo list back to mainController
+exportList(): exports list to .txt file
+--
+editTodoName(): changes name of current todo item
+markCompleted(): mark todo item as completed or incomplete
+editDate(): changes due date of todo item
+editDescription(): changes description of todo item
 }
+
+editController o-- saveController: exportList() >
+
+class openController {
+Prompts for file path of file to open.
+Passes back file path.
+}
+
+class saveController {
+Prompts for file path to save .txt file at.
+Passes back file path.
+}
+
+
 
 @enduml
