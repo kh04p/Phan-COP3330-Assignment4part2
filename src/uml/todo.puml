@@ -7,6 +7,13 @@ class openController
 class saveController
 class editController
 
+class todo {
+root = "mainTodo.fxml"
+Scene scene
+Stage primaryStage
+changeScene(): takes in specified fxml file name to change window
+}
+
 todo *-- mainController
 
 class mainController {
@@ -16,6 +23,7 @@ exportFile(): exports current file to .txt file
 --
 newList(): creates new todo list within file
 openList(): opens currently selected todo list within file
+deleteList(): deletes selected todo list
 }
 
 mainController o- openController: openFile() >
@@ -26,6 +34,7 @@ editController --|> mainController: saveList() >
 
 class editController {
 newTodo(): creates new todo within current list
+deleteTodo(): deletes selected todo
 nameList(): changes name of current todo list
 saveList(): returns current todo list back to mainController
 exportList(): exports list to .txt file

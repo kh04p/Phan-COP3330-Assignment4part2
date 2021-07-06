@@ -11,6 +11,11 @@ import javafx.scene.input.MouseEvent;
 import javax.swing.*;
 
 public class editController {
+    @FXML
+    private Button newTodoButton;
+
+    @FXML
+    private Button deleteTodoButton;
 
     @FXML
     private CheckBox markCompletedButton;
@@ -34,9 +39,6 @@ public class editController {
     private Button editTodoNameButton;
 
     @FXML
-    private Button newTodoButton;
-
-    @FXML
     private TextField nameListField;
 
     @FXML
@@ -50,6 +52,13 @@ public class editController {
         //User can add a new item into list
         //Once newTodoButton is clicked, program will create a new Map containing empty fields for name, status, due date and description
         //User can use editDate, editDescription and markCompleted to change current item
+    }
+
+    @FXML
+    void deleteTodo(ActionEvent event) {
+        //User can select a current item and hit deleteTodoButton to delete it
+        //Program will find a Map with matching "name" key and remove it from ArrayList of Maps
+        //Return confirmation
     }
 
     @FXML

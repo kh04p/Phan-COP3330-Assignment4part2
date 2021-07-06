@@ -60,7 +60,7 @@
             </AnchorPane>
         </items>
       </SplitPane>
-      <Button fx:id="exportListButton" layoutX="131.0" layoutY="360.0" mnemonicParsing="false" onAction="#exportList" text="Export Todo List">
+      <Button fx:id="exportListButton" layoutX="361.0" layoutY="14.0" mnemonicParsing="false" onAction="#exportList" text="Export Todo List">
          <font>
             <Font name="Calibri" size="14.0" />
          </font></Button>
@@ -80,6 +80,11 @@
          </font>
       </Label>
       <Button fx:id="saveListButton" layoutX="305.0" layoutY="14.0" mnemonicParsing="false" onAction="#saveList" text="Save">
+         <font>
+            <Font name="Calibri" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="deleteTodoButton" layoutX="131.0" layoutY="360.0" mnemonicParsing="false" onAction="#deleteTodo" text="Delete Todo Item">
          <font>
             <Font name="Calibri" size="14.0" />
          </font>

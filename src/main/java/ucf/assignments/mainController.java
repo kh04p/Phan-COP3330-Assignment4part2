@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 public class mainController {
+    @FXML
+    private Button newFileButton;
 
     @FXML
     private Button openFileButton;
@@ -13,13 +15,13 @@ public class mainController {
     private Button exportFileButton;
 
     @FXML
+    private Button newListButton;
+
+    @FXML
     private Button openListButton;
 
     @FXML
-    private Button newFileButton;
-
-    @FXML
-    private Button newListButton;
+    private Button deleteListButton;
 
     @FXML
     void newFile(ActionEvent event) {
@@ -63,5 +65,11 @@ public class mainController {
     //Once a list is selected and openListButton is clicked, program will record name of list
     //User will be directed to editTodo.fxml to edit each item in list
     //changeScene(editTodo.fxml) will be used
+    }
+
+    @FXML
+    void deleteList(ActionEvent event) {
+    //Program will record name of list and search within current ArrayLists of ArrayLists of Maps
+    //Once correct ArrayList is found, program will remove it and return confirmation
     }
 }
