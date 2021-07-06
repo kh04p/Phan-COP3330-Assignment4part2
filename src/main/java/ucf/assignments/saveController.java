@@ -15,13 +15,13 @@ public class saveController {
 
     @FXML
     void fileName(ActionEvent event) {
-    //User will be prompted to enter the path they wish to save at
+        //User will be prompted to enter the path they wish to save at
     }
 
     @FXML
     void saveFile(ActionEvent event) {
-    //User can hit saveFileButton once they are done typing
-    //File path will be saved as String and passed back
+        //User can hit saveFileButton once they are done typing
+        //File path will be saved as String and passed back
     }
 
 }

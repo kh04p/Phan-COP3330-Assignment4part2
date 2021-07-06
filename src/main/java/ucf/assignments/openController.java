@@ -15,13 +15,13 @@ public class openController {
 
     @FXML
     void fileName(ActionEvent event) {
-    //User will be prompted to enter the path of the file they wish to open
+        //User will be prompted to enter the path of the file they wish to open
     }
 
     @FXML
     void openFile(ActionEvent event) {
-    //User can hit openFileButton once they are done typing
-    //File path will be saved as String and passed back
+        //User can hit openFileButton once they are done typing
+        //File path will be saved as String and passed back
     }
 
 }
