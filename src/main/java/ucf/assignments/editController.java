@@ -15,6 +15,8 @@ import javafx.scene.input.MouseEvent;
 import javax.swing.*;
 
 public class editController {
+    //Limit of 100 items total
+
     @FXML
     private Button newTodoButton;
 
@@ -24,7 +26,7 @@ public class editController {
     @FXML
     private CheckBox markCompletedButton;
 
-    @FXML
+    @FXML //YYYY-MM-DD format
     private TextField dueDateField;
 
     @FXML

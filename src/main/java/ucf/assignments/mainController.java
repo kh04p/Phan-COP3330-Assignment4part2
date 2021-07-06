@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 public class mainController {
+    //Limit of 100 lists total
+
     @FXML
     private Button newFileButton;
 
