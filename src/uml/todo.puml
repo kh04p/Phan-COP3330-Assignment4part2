@@ -38,6 +38,7 @@ deleteTodo(): deletes selected todo
 nameList(): changes name of current todo list
 saveList(): returns current todo list back to mainController
 exportList(): exports list to .txt file
+filterStatus(): program will cycle through various filters of completed / incomplete / all
 --
 editTodoName(): changes name of current todo item
 markCompleted(): mark todo item as completed or incomplete

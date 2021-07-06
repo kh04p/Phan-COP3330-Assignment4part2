@@ -46,6 +46,7 @@ public class mainController {
             //Map will be put into temporary ArrayList of Maps
         //temporary ArrayList of Maps will be put into bigger ArrayList of ArrayLists of Maps
         //Populate listView in mainTodo.fxml with names of each list
+        //New data will be added to the same ArrayList of ArrayLists of Maps if user wishes to open another file
     }
 
     @FXML

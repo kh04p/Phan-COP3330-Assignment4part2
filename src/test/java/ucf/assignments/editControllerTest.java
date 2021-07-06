@@ -50,4 +50,9 @@ class editControllerTest {
     public void exportListTest() {
         //check location where file was created and its contents
     }
+
+    @Test
+    public void filterStatusTest() {
+        //export filtered results as a separate list and check if contents are correct
+    }
 }

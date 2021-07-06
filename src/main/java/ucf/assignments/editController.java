@@ -52,6 +52,9 @@ public class editController {
     private Button exportListButton;
 
     @FXML
+    private Button filterButton;
+
+    @FXML
     void newTodo(ActionEvent event) {
         //User can add a new item into list
         //Once newTodoButton is clicked, program will create a new Map containing empty fields for name, status, due date and description
@@ -131,6 +134,13 @@ public class editController {
         //File variable will be created to create new file with desired name
         //BufferedWriter will be used to write String to new file and save
         //Return confirmation
+    }
+
+    @FXML
+    void filterStatus(ActionEvent event) {
+        //Every time filterButton is clicked, program will cycle through various filters: completed, incomplete, all
+        //Program will look through current ArrayList of Maps -> search for Maps with correct "status" value
+        //All filtered results will be added to a temporary ArrayList and populated in ListView
     }
 }
 
