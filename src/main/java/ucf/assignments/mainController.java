@@ -4,12 +4,24 @@
  */
 package ucf.assignments;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class mainController {
     //Limit of 100 lists total
+
+    @FXML
+    private ListView ListOfTodoList = new ListView();
 
     @FXML
     private Button newFileButton;
@@ -34,6 +46,12 @@ public class mainController {
         //Once newFileButton is clicked, user will be directed to saveTodo.fxml to enter a file name to save to local directory.
         //changeScene(saveTodo.fxml) will be used
         //New File variable will be created to create empty text file using file path from user -> Return exception if file cannot be created
+        String createFile = "C:\\Users\\khoa1\\Desktop\\random_todo_list2.txt";
+        try {
+            file.create(createFile);
+        } catch (IOException e) {
+            System.out.println("Unable to create file.");
+        }
     }
 
     @FXML
@@ -49,6 +67,25 @@ public class mainController {
         //temporary ArrayList of Maps will be put into bigger ArrayList of ArrayLists of Maps
         //Populate listView in mainTodo.fxml with names of each list
         //New data will be added to the same ArrayList of ArrayLists of Maps if user wishes to open another file
+
+        String filePath = "C:\\Users\\khoa1\\Desktop\\random_todo_list.txt";
+        Map<String, Map<String, Map<String, String>>> todoList = new HashMap<>();
+        try {
+            todoList = file.read(filePath);
+        } catch (IOException e) {
+            System.out.println("Unable to read file");
+        }
+
+        Map<String, Map<String, String>> todo;
+
+        for (int i = 0; i < todoList.size(); i++) {
+            String listName = (String) todoList.keySet().toArray()[i];
+            todo = todoList.get(listName);
+            for (int j = 0; j < todo.size(); j++) {
+                String todoName = (String) todo.keySet().toArray()[j];
+                ListOfTodoList.getItems().add(todoName);
+            }
+        }
     }
 
     @FXML
