@@ -14,6 +14,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,22 +70,19 @@ public class mainController {
         //New data will be added to the same ArrayList of ArrayLists of Maps if user wishes to open another file
 
         String filePath = "C:\\Users\\khoa1\\Desktop\\random_todo_list.txt";
-        Map<String, Map<String, Map<String, String>>> todoList = new HashMap<>();
+        ArrayList<Map<String, Map<String, Map<String, String>>>> bigList = new ArrayList<>();
         try {
-            todoList = file.read(filePath);
+            bigList = file.read(filePath);
         } catch (IOException e) {
             System.out.println("Unable to read file");
         }
 
         Map<String, Map<String, String>> todo;
 
-        for (int i = 0; i < todoList.size(); i++) {
-            String listName = (String) todoList.keySet().toArray()[i];
-            todo = todoList.get(listName);
-            for (int j = 0; j < todo.size(); j++) {
-                String todoName = (String) todo.keySet().toArray()[j];
-                ListOfTodoList.getItems().add(todoName);
-            }
+        for (int i = 0; i < bigList.size(); i++) {
+            Map<String, Map<String, Map<String, String>>> todoList = bigList.get(i);
+            String todoListName = (String) todoList.keySet().toArray()[0];
+            ListOfTodoList.getItems().add(todoListName);
         }
     }
 
