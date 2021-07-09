@@ -4,6 +4,7 @@
  */
 package ucf.assignments;
 
+import com.sun.tools.javac.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,19 +14,24 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class mainController {
     //Limit of 100 lists total
 
-    @FXML
-    private ListView ListOfTodoList = new ListView();
+
+    String filePath = "C:\\Users\\khoa1\\Desktop\\random_todo_list.txt";
+    String exportFilePath = "C:\\Users\\khoa1\\Desktop\\exported_list.txt";
 
     @FXML
-    private Button newFileButton;
+    private ListView ListOfTodoList = new ListView();
 
     @FXML
     private Button openFileButton;
@@ -43,19 +49,6 @@ public class mainController {
     private Button deleteListButton;
 
     @FXML
-    void newFile(ActionEvent event) {
-        //Once newFileButton is clicked, user will be directed to saveTodo.fxml to enter a file name to save to local directory.
-        //changeScene(saveTodo.fxml) will be used
-        //New File variable will be created to create empty text file using file path from user -> Return exception if file cannot be created
-        String createFile = "C:\\Users\\khoa1\\Desktop\\random_todo_list2.txt";
-        try {
-            file.create(createFile);
-        } catch (IOException e) {
-            System.out.println("Unable to create file.");
-        }
-    }
-
-    @FXML
     void openFile(ActionEvent event) {
         //Once openFileButton is clicked, user will be prompted for file path through openTodo.fxml -> changeScene(openTodo.fxml)
         //An arraylist of arraylists of maps will be created and each map will contain item's name, current state, due date and description.
@@ -69,18 +62,18 @@ public class mainController {
         //Populate listView in mainTodo.fxml with names of each list
         //New data will be added to the same ArrayList of ArrayLists of Maps if user wishes to open another file
 
-        String filePath = "C:\\Users\\khoa1\\Desktop\\random_todo_list.txt";
-        ArrayList<Map<String, Map<String, Map<String, String>>>> bigList = new ArrayList<>();
+        ArrayList<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>>> bigList = new ArrayList<>();
+
         try {
             bigList = file.read(filePath);
         } catch (IOException e) {
             System.out.println("Unable to read file");
         }
 
-        Map<String, Map<String, String>> todo;
+        LinkedHashMap<String, LinkedHashMap<String, String>> todo;
 
         for (int i = 0; i < bigList.size(); i++) {
-            Map<String, Map<String, Map<String, String>>> todoList = bigList.get(i);
+            LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = bigList.get(i);
             String todoListName = (String) todoList.keySet().toArray()[0];
             ListOfTodoList.getItems().add(todoListName);
         }
@@ -91,6 +84,9 @@ public class mainController {
         //Once exportFileButton is clicked, program will convert current ArrayList of ArrayLists of Maps into String
         //User will be prompted for name of file
         //BufferedWriter will be used to write String into file and save it -> Return exception if file cannot be created
+
+        todo m = new todo();
+        m.changeScene("saveTodo.fxml");
     }
 
     @FXML

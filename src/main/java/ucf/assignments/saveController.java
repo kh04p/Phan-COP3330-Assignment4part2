@@ -24,8 +24,17 @@ public class saveController {
 
     @FXML
     void saveFile(ActionEvent event) {
+
+        String filePath = fileNameField.getText().toString();
+        fileNameField.setText(file.export(filePath));
+
         //User can hit saveFileButton once they are done typing
         //File path will be saved as String and passed back
     }
 
+    @FXML
+    void goBack(ActionEvent event) {
+        todo m = new todo();
+        m.changeScene("mainTodo.fxml");
+    }
 }

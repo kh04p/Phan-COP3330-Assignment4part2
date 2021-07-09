@@ -8,19 +8,15 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.mainController">
    <children>
       <ListView fx:id="ListOfTodoList" layoutY="30.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
-      <Button fx:id="openFileButton" layoutX="93.0" layoutY="14.0" mnemonicParsing="false" onAction="#openFile" text="Open File">
+      <Button fx:id="openFileButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#openFile" text="Open File">
          <font>
             <Font name="Calibri" size="14.0" />
          </font></Button>
-      <Button fx:id="exportFileButton" layoutX="176.0" layoutY="14.0" mnemonicParsing="false" onAction="#exportFile" text="Export File">
+      <Button fx:id="exportFileButton" layoutX="97.0" layoutY="14.0" mnemonicParsing="false" onAction="#exportFile" text="Export File">
          <font>
             <Font name="Calibri" size="14.0" />
          </font></Button>
       <Button fx:id="openListButton" layoutX="123.0" layoutY="360.0" mnemonicParsing="false" onAction="#openList" text="Open Todo List">
-         <font>
-            <Font name="Calibri" size="14.0" />
-         </font></Button>
-      <Button fx:id="newFileButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#newFile" text="New File">
          <font>
             <Font name="Calibri" size="14.0" />
          </font></Button>
