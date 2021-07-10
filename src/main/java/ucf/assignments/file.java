@@ -5,6 +5,42 @@ import java.util.*;
 
 public class file {
     private static ArrayList<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>>> bigList = new ArrayList<>();
+    private static LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> currentTodoList = new LinkedHashMap<>();
+
+    public static ArrayList<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>>> getBigList() {
+        return bigList;
+    }
+
+    public static LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> getCurrentTodoList() {
+        return currentTodoList;
+    }
+
+    public static void setCurrentTodoList(String todoList) {
+        for (int i = 0; i < bigList.size(); i++) {
+            LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> temp = bigList.get(i);
+            String todoListName = (String) temp.keySet().toArray()[0];
+            if (todoListName.equals(todoList)) {
+                currentTodoList = temp;
+            }
+        }
+    }
+
+    public static void removeTodoList(String todoList) {
+        for (int i = 0; i < bigList.size(); i++) {
+            LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> temp = bigList.get(i);
+            String todoListName = (String) temp.keySet().toArray()[0];
+            if (todoListName.equals(todoList)) {
+                bigList.remove(i);
+            }
+        }
+    }
+
+    public static void addTodoList(String todoListName) {
+        LinkedHashMap<String,LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = new LinkedHashMap<>();
+        LinkedHashMap<String, LinkedHashMap<String, String>> todo = new LinkedHashMap<>();
+        todoList.put(todoListName, todo);
+        bigList.add(todoList);
+    }
 
     public static ArrayList<LinkedHashMap<String,LinkedHashMap<String, LinkedHashMap<String, String>>>> read(String filePath) throws IOException {
         File file = new File(filePath);
@@ -65,23 +101,6 @@ public class file {
         }
     }
 
-    public static String create(String filePath) throws IOException {
-        //contents of the file being generated
-        String content = "";
-
-        //catch any IO exceptions when attempting to create html file.
-        try {
-            File file = new File(filePath);
-            //creates bufferedWriter to write to html file and close afterwards.
-            BufferedWriter output = new BufferedWriter(new FileWriter(file));
-            output.write(content);
-            output.close();
-            return String.format("Generated file at %s%n", filePath); //returns confirmation after creating file.
-        } catch (IOException e ) {
-            return "Unable to generate HTML file."; //returns confirmation if unable to create file.
-        }
-    }
-
     public static String export(String filePath) {
         StringBuilder content = new StringBuilder();
 
@@ -114,4 +133,7 @@ public class file {
             return "Unable to generate todo list.";
         }
     }
+
+
+
 }

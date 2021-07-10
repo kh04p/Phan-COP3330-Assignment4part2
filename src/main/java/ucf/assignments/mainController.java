@@ -4,29 +4,16 @@
  */
 package ucf.assignments;
 
-import com.sun.tools.javac.Main;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class mainController {
     //Limit of 100 lists total
-
-
     String filePath = "C:\\Users\\khoa1\\Desktop\\random_todo_list.txt";
     String exportFilePath = "C:\\Users\\khoa1\\Desktop\\exported_list.txt";
 
@@ -34,19 +21,15 @@ public class mainController {
     private ListView ListOfTodoList = new ListView();
 
     @FXML
-    private Button openFileButton;
+    public void initialize() {
+        ArrayList<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>>> bigList = file.getBigList();
 
-    @FXML
-    private Button exportFileButton;
-
-    @FXML
-    private Button newListButton;
-
-    @FXML
-    private Button openListButton;
-
-    @FXML
-    private Button deleteListButton;
+        for (int i = 0; i < bigList.size(); i++) {
+            LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = bigList.get(i);
+            String todoListName = (String) todoList.keySet().toArray()[0];
+            ListOfTodoList.getItems().add(todoListName);
+        }
+    }
 
     @FXML
     void openFile(ActionEvent event) {
@@ -70,8 +53,6 @@ public class mainController {
             System.out.println("Unable to read file");
         }
 
-        LinkedHashMap<String, LinkedHashMap<String, String>> todo;
-
         for (int i = 0; i < bigList.size(); i++) {
             LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = bigList.get(i);
             String todoListName = (String) todoList.keySet().toArray()[0];
@@ -85,8 +66,8 @@ public class mainController {
         //User will be prompted for name of file
         //BufferedWriter will be used to write String into file and save it -> Return exception if file cannot be created
 
-        todo m = new todo();
-        m.changeScene("saveTodo.fxml");
+        todo todo = new todo();
+        todo.changeScene("saveTodo.fxml");
     }
 
     @FXML
@@ -94,6 +75,8 @@ public class mainController {
         //Once newListButton is clicked, an empty ArrayList of Maps will be created
         //User will be directed to editTodo.fxml to edit new list
         //changeScene(editTodo.fxml) will be used
+        file.addTodoList("New Todo List (edit to change name)");
+        ListOfTodoList.getItems().add("New Todo List (edit to change name)");
     }
 
     @FXML
@@ -101,11 +84,16 @@ public class mainController {
         //Once a list is selected and openListButton is clicked, program will record name of list
         //User will be directed to editTodo.fxml to edit each item in list
         //changeScene(editTodo.fxml) will be used
+        file.setCurrentTodoList((String) ListOfTodoList.getSelectionModel().getSelectedItem());
+        todo todo = new todo();
+        todo.changeScene("editTodo.fxml");
     }
 
     @FXML
     void deleteList(ActionEvent event) {
         //Program will record name of list and search within current ArrayLists of ArrayLists of Maps
         //Once correct ArrayList is found, program will remove it and return confirmation
+        file.removeTodoList((String) ListOfTodoList.getSelectionModel().getSelectedItem());
+        ListOfTodoList.getItems().remove(ListOfTodoList.getSelectionModel().getSelectedItem());
     }
 }

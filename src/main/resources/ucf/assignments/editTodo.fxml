@@ -16,7 +16,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <ListView prefHeight="300.0" prefWidth="589.0" />
+                  <ListView fx:id="ListOfTodos" onMouseClicked="#selectTodo" prefHeight="300.0" prefWidth="589.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -90,6 +90,11 @@
          </font>
       </Button>
       <Button fx:id="filterButton" layoutX="260.0" layoutY="360.0" mnemonicParsing="false" onAction="#filterStatus" text="Filter by Status">
+         <font>
+            <Font name="Calibri" size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="539.0" layoutY="360.0" mnemonicParsing="false" onAction="#goBack" text="Back">
          <font>
             <Font name="Calibri" size="14.0" />
          </font>

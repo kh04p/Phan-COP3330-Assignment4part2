@@ -6,16 +6,21 @@ package ucf.assignments;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class editController {
     //Limit of 100 items total
+    //private static ArrayList<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>>> bigList = file.getBigList();
+    private static LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = file.getCurrentTodoList();
+    private static LinkedHashMap<String, LinkedHashMap<String, String>> currentTodo = todoList.get((String) todoList.keySet().toArray()[0]);
+
+    @FXML
+    private ListView ListOfTodos = new ListView();
 
     @FXML
     private Button newTodoButton;
@@ -57,10 +62,62 @@ public class editController {
     private Button filterButton;
 
     @FXML
+    public void initialize() {
+        todoList = file.getCurrentTodoList();
+        currentTodo = todoList.get((String) todoList.keySet().toArray()[0]);
+        nameListField.setText((String) todoList.keySet().toArray()[0]);
+        LinkedHashMap<String, LinkedHashMap<String, String>> todo = todoList.get((String) todoList.keySet().toArray()[0]);
+
+        for (int j = 0; j < todo.size(); j++) {
+            String todoName = (String) todo.keySet().toArray()[j];
+            ListOfTodos.getItems().add(todoName);
+        }
+    }
+
+    @FXML
+    void goBack(ActionEvent event) {
+        todo m = new todo();
+        m.changeScene("mainTodo.fxml");
+    }
+
+    @FXML
+    void selectTodo() {
+
+        String todoName = (String) ListOfTodos.getSelectionModel().getSelectedItem();
+        todoNameField.setText(todoName);
+        LinkedHashMap<String, String> todoValues = currentTodo.get(todoName);
+
+        markCompletedButton.setSelected(Boolean.parseBoolean(todoValues.get("status")));
+        dueDateField.setText(todoValues.get("date"));
+        descriptionField.setText(todoValues.get("description"));
+    }
+
+    @FXML
     void newTodo(ActionEvent event) {
         //User can add a new item into list
         //Once newTodoButton is clicked, program will create a new Map containing empty fields for name, status, due date and description
         //User can use editDate, editDescription and markCompleted to change current item
+        String todoName = todoNameField.getText().trim();
+
+        if (todoName.isBlank()) {
+            todoName = String.format("Todo item %d", currentTodo.size() + 1);
+        }
+
+        for (int i = 0; i < currentTodo.size(); i++) {
+            if (todoName.equals(currentTodo.keySet().toArray()[i])) {
+                todoName = String.format("Todo item %d", currentTodo.size() + 1);
+            }
+        }
+
+        LinkedHashMap<String, String> todoValues = new LinkedHashMap<>();
+        todoValues.put("status", "");
+        todoValues.put("date", "");
+        todoValues.put("description", "");
+
+        currentTodo.put(todoName, todoValues);
+        todoList.put((String) todoList.keySet().toArray()[0], currentTodo);
+        ListOfTodos.getItems().clear();
+        initialize();
     }
 
     @FXML
@@ -68,6 +125,15 @@ public class editController {
         //User can select a current item and hit deleteTodoButton to delete it
         //Program will find a Map with matching "name" key and remove it from ArrayList of Maps
         //Return confirmation
+        String todoName = (String) ListOfTodos.getSelectionModel().getSelectedItem();
+
+        for (int i = 0; i < currentTodo.size(); i++) {
+            currentTodo.remove(todoName);
+        }
+
+        todoList.put((String) todoList.keySet().toArray()[0], currentTodo);
+        ListOfTodos.getItems().clear();
+        initialize();
     }
 
     @FXML
