@@ -8,15 +8,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-public class openController {
+public class saveListController {
 
     @FXML
     private TextField fileNameField;
 
     @FXML
-    void openFile(ActionEvent event) {
-        String filePath = fileNameField.getText();
-        fileNameField.setText(file.importFile(filePath));
+    void saveFile(ActionEvent event) {
+        String filePath = fileNameField.getText().toString();
+        fileNameField.setText(file.exportList(filePath));
     }
 
     @FXML

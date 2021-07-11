@@ -8,14 +8,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class mainController {
     //Limit of 100 lists total
-    String filePath = "C:\\Users\\khoa1\\Desktop\\random_todo_list.txt";
-    String exportFilePath = "C:\\Users\\khoa1\\Desktop\\exported_list.txt";
 
     @FXML
     private ListView ListOfTodoList = new ListView();
@@ -23,76 +20,49 @@ public class mainController {
     @FXML
     public void initialize() {
         ArrayList<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>>> bigList = file.getBigList();
+        int counter = 0;
 
         for (int i = 0; i < bigList.size(); i++) {
+            if (counter > 100) {
+                break;
+            }
             LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = bigList.get(i);
             String todoListName = (String) todoList.keySet().toArray()[0];
             ListOfTodoList.getItems().add(todoListName);
+            counter++;
         }
+
+        System.out.println(bigList.size());
     }
 
     @FXML
     void openFile(ActionEvent event) {
-        //Once openFileButton is clicked, user will be prompted for file path through openTodo.fxml -> changeScene(openTodo.fxml)
-        //An arraylist of arraylists of maps will be created and each map will contain item's name, current state, due date and description.
-        //File and Scanner variables will be created using provided file path -> Return exception if file cannot be opened
-        //while scanner.hasNextLine()
-            //Another Scanner will be created to scan each character in each line
-            //while Scanner has next
-            //Scanned data will be put into temporary Map
-            //Map will be put into temporary ArrayList of Maps
-        //temporary ArrayList of Maps will be put into bigger ArrayList of ArrayLists of Maps
-        //Populate listView in mainTodo.fxml with names of each list
-        //New data will be added to the same ArrayList of ArrayLists of Maps if user wishes to open another file
-
-        ArrayList<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>>> bigList = new ArrayList<>();
-
-        try {
-            bigList = file.read(filePath);
-        } catch (IOException e) {
-            System.out.println("Unable to read file");
-        }
-
-        for (int i = 0; i < bigList.size(); i++) {
-            LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = bigList.get(i);
-            String todoListName = (String) todoList.keySet().toArray()[0];
-            ListOfTodoList.getItems().add(todoListName);
-        }
+        todo todo = new todo();
+        todo.changeScene("openTodo.fxml");
     }
 
     @FXML
     void exportFile(ActionEvent event) {
-        //Once exportFileButton is clicked, program will convert current ArrayList of ArrayLists of Maps into String
-        //User will be prompted for name of file
-        //BufferedWriter will be used to write String into file and save it -> Return exception if file cannot be created
-
         todo todo = new todo();
-        todo.changeScene("saveTodo.fxml");
+        todo.changeScene("saveTodoList.fxml");
     }
 
     @FXML
     void newList(ActionEvent event) {
-        //Once newListButton is clicked, an empty ArrayList of Maps will be created
-        //User will be directed to editTodo.fxml to edit new list
-        //changeScene(editTodo.fxml) will be used
         file.addTodoList("New Todo List (edit to change name)");
         ListOfTodoList.getItems().add("New Todo List (edit to change name)");
     }
 
     @FXML
     void openList(ActionEvent event) {
-        //Once a list is selected and openListButton is clicked, program will record name of list
-        //User will be directed to editTodo.fxml to edit each item in list
-        //changeScene(editTodo.fxml) will be used
-        file.setCurrentTodoList((String) ListOfTodoList.getSelectionModel().getSelectedItem());
+        String selectedList = (String) ListOfTodoList.getSelectionModel().getSelectedItem();
+        file.setCurrentTodoList(selectedList);
         todo todo = new todo();
         todo.changeScene("editTodo.fxml");
     }
 
     @FXML
     void deleteList(ActionEvent event) {
-        //Program will record name of list and search within current ArrayLists of ArrayLists of Maps
-        //Once correct ArrayList is found, program will remove it and return confirmation
         file.removeTodoList((String) ListOfTodoList.getSelectionModel().getSelectedItem());
         ListOfTodoList.getItems().remove(ListOfTodoList.getSelectionModel().getSelectedItem());
     }

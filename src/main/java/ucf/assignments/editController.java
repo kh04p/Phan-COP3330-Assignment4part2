@@ -7,10 +7,7 @@ package ucf.assignments;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 
-import javax.swing.*;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class editController {
@@ -18,15 +15,10 @@ public class editController {
     //private static ArrayList<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>>> bigList = file.getBigList();
     private static LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = file.getCurrentTodoList();
     private static LinkedHashMap<String, LinkedHashMap<String, String>> currentTodo = todoList.get((String) todoList.keySet().toArray()[0]);
+    private final LinkedHashMap<String, LinkedHashMap<String, String>> originalList = currentTodo;
 
     @FXML
     private ListView ListOfTodos = new ListView();
-
-    @FXML
-    private Button newTodoButton;
-
-    @FXML
-    private Button deleteTodoButton;
 
     @FXML
     private CheckBox markCompletedButton;
@@ -38,28 +30,13 @@ public class editController {
     private TextArea descriptionField;
 
     @FXML
-    private Button editDateButton;
-
-    @FXML
-    private Button editDescriptionButton;
-
-    @FXML
     private TextField todoNameField;
-
-    @FXML
-    private Button editTodoNameButton;
 
     @FXML
     private TextField nameListField;
 
     @FXML
-    private Button saveListButton;
-
-    @FXML
-    private Button exportListButton;
-
-    @FXML
-    private Button filterButton;
+    private ChoiceBox<String> filterChoiceBox;
 
     @FXML
     public void initialize() {
@@ -72,12 +49,68 @@ public class editController {
             String todoName = (String) todo.keySet().toArray()[j];
             ListOfTodos.getItems().add(todoName);
         }
+        filterChoiceBox.getItems().clear();
+        filterChoiceBox.getItems().addAll("Completed", "Incomplete", "Unfiltered");
+    }
+
+    public static LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> getTodoList() {
+        return todoList;
+    }
+
+    @FXML
+    void saveNameList(ActionEvent event) {
+        String oldListName = (String) todoList.keySet().toArray()[0];
+        String newListName = nameListField.getText();
+        LinkedHashMap<String, LinkedHashMap<String, String>> todo = currentTodo;
+        todoList.remove(oldListName);
+        todoList.put(newListName, todo);
+        currentTodo = todoList.get((String) todoList.keySet().toArray()[0]);
+        ListOfTodos.getItems().clear();
+        initialize();
+    }
+
+    @FXML
+    void exportList(ActionEvent event) {
+        todo todo = new todo();
+        todo.changeScene("saveTodo.fxml");
+    }
+
+    @FXML
+    void filterStatus(ActionEvent event) {
+        //Every time filterButton is clicked, program will cycle through various filters: completed, incomplete, all
+        //Program will look through current ArrayList of Maps -> search for Maps with correct "status" value
+        //All filtered results will be added to a temporary ArrayList and populated in ListView
+
+        LinkedHashMap<String, LinkedHashMap<String, String>> filteredList = new LinkedHashMap<>();
+        if (filterChoiceBox.getValue().equals("Completed")) {
+            filteredList = filter("true");
+        } else if (filterChoiceBox.getValue().equals("Incomplete")){
+            filteredList = filter("false");
+        } else {
+            filteredList = originalList;
+        }
+
+        currentTodo = filteredList;
+        todoList.put((String) todoList.keySet().toArray()[0], currentTodo);
+        ListOfTodos.getItems().clear();
+        initialize();
+    }
+
+    private LinkedHashMap<String, LinkedHashMap<String, String>> filter(String status) {
+        LinkedHashMap<String, LinkedHashMap<String, String>> temp = currentTodo;
+        for (int i = 0; i < temp.size(); i++) {
+            LinkedHashMap<String, String> todoValues = temp.get(temp.keySet().toArray()[i]);
+            if (!todoValues.get("status").equals(status)) {
+                temp.remove(temp.keySet().toArray()[i]);
+            }
+        }
+        return temp;
     }
 
     @FXML
     void goBack(ActionEvent event) {
-        todo m = new todo();
-        m.changeScene("mainTodo.fxml");
+        todo todo = new todo();
+        todo.changeScene("mainTodo.fxml");
     }
 
     @FXML
@@ -94,9 +127,6 @@ public class editController {
 
     @FXML
     void newTodo(ActionEvent event) {
-        //User can add a new item into list
-        //Once newTodoButton is clicked, program will create a new Map containing empty fields for name, status, due date and description
-        //User can use editDate, editDescription and markCompleted to change current item
         String todoName = todoNameField.getText().trim();
 
         if (todoName.isBlank()) {
@@ -122,14 +152,30 @@ public class editController {
 
     @FXML
     void deleteTodo(ActionEvent event) {
-        //User can select a current item and hit deleteTodoButton to delete it
-        //Program will find a Map with matching "name" key and remove it from ArrayList of Maps
-        //Return confirmation
         String todoName = (String) ListOfTodos.getSelectionModel().getSelectedItem();
-
         for (int i = 0; i < currentTodo.size(); i++) {
             currentTodo.remove(todoName);
         }
+        todoList.put((String) todoList.keySet().toArray()[0], currentTodo);
+        ListOfTodos.getItems().clear();
+        initialize();
+    }
+
+    @FXML
+    void deleteAll(ActionEvent event) {
+        editController.currentTodo.clear();
+        editController.todoList.put((String) todoList.keySet().toArray()[0], editController.currentTodo);
+        ListOfTodos.getItems().clear();
+        initialize();
+    }
+
+    @FXML
+    void editTodoName(ActionEvent event) {
+        String oldName = (String) ListOfTodos.getSelectionModel().getSelectedItem();
+        String newName = todoNameField.getText();
+        LinkedHashMap<String, String> newValues = currentTodo.get(oldName);
+        currentTodo.remove(oldName);
+        currentTodo.put(newName, newValues);
 
         todoList.put((String) todoList.keySet().toArray()[0], currentTodo);
         ListOfTodos.getItems().clear();
@@ -137,78 +183,75 @@ public class editController {
     }
 
     @FXML
-    void todoName(ActionEvent event) {
-        //User will type in desired name for item here. Otherwise, it will be populated with existing data from item.
-        //After entering desired name, user can hit editTodoNameButton to save
-    }
+    void saveTodoChanges(ActionEvent event) {
+        String selectedTodo = (String) ListOfTodos.getSelectionModel().getSelectedItem();
+        LinkedHashMap<String, String> newValues = currentTodo.get(selectedTodo);
 
-    @FXML
-    void editTodoName(ActionEvent event) {
-        //Name will be passed from todoNameField after user hits editTodoNameButton
-        //Program will find a value within that Map with the key for "name" and replaces it with provided user input
-    }
+        String newDescription = descriptionField.getText();
+        String newDate = dueDateField.getText();
 
-    @FXML
-    void markCompleted(ActionEvent event) {
-        //User can mark item as completed or incomplete
-        //Once checked or unchecked, program will search current Map for value with "status" key and change its boolean state
-    }
+        if (file.isValidDate(newDate)) {
+            newValues.put("date", newDate);
+            currentTodo.put(selectedTodo, newValues);
 
-    @FXML
-    void dueDate(ActionEvent event) {
-        //User will type in desired date here. Otherwise, it will be populated with existing data from item.
-        //After entering desired date, user can hit editDateButton to save
-    }
+            if (newDescription.length() <= 256) {
+                newValues.put("description", newDescription);
+                currentTodo.put(selectedTodo, newValues);
 
-    @FXML
-    void editDate(ActionEvent event) {
-        //Date will be passed from dueDateField after user hits editDateButton
-        //Program will find a value within that Map with the key for "date" and replaces it with provided user input
-    }
+                if (markCompletedButton.isSelected()) {
+                    newValues.put("status", "true");
+                } else {
+                    newValues.put("status", "false");
+                }
 
-    @FXML
-    void description(MouseEvent event) {
-        //User will type in desired description here. Otherwise, it will be populated with existing data from item.
-        //After entering desired description, user can hit editDescriptionButton to save
-    }
+                todoList.put((String) todoList.keySet().toArray()[0], currentTodo);
+                ListOfTodos.getItems().clear();
+                initialize();
+            }
+            else {
+                descriptionField.setText("Entered description was over 256-character limit.");
+            }
 
-    @FXML
-    void editDescription(ActionEvent event) {
-        //Description will be passed from descriptionField after user hits editDescriptionButton
-        //Program will find a value within that Map with the key for "description" and replaces it with provided String
-    }
+            if (markCompletedButton.isSelected()) {
+                newValues.put("status", "true");
+            } else {
+                newValues.put("status", "false");
+            }
 
-    @FXML
-    void nameList(ActionEvent event) {
-        //User will type in desired name for list here, which will be ArrayList of Maps
-        //Otherwise, it will be populated with existing data from item.
-        //After entering desired name, user can hit saveListButton to return entire ArrayList back to mainController
-    }
+            todoList.put((String) todoList.keySet().toArray()[0], currentTodo);
+            ListOfTodos.getItems().clear();
+            initialize();
+        }
+        else {
+            dueDateField.setText("Invalid date format.");
+            if (newDescription.length() <= 256) {
+                newValues.put("description", newDescription);
+                currentTodo.put(selectedTodo, newValues);
 
-    @FXML
-    void saveList(ActionEvent event) {
-        //Once user is done typing in name of current list in nameList(), user can hit saveListButton
-        //Program will create a temporary variable containing the old name of the list if it was not empty
-        //Program will return both old name and ArrayList of Maps with new name back to mainController
-        //ArrayList with old name will be deleted and new ArrayList of Maps will be added to bigger ArrayList in mainController
-    }
+                if (markCompletedButton.isSelected()) {
+                    newValues.put("status", "true");
+                } else {
+                    newValues.put("status", "false");
+                }
 
-    @FXML
-    void exportList(ActionEvent event) {
-        //User will be able to export current list into a file containing only this list
-        //Once clicked, user will be directed to saveTodo.fxml
-        //Path of file to be saved will be passed back
-        //Current ArrayList of Maps will be converted to String
-        //File variable will be created to create new file with desired name
-        //BufferedWriter will be used to write String to new file and save
-        //Return confirmation
-    }
+                todoList.put((String) todoList.keySet().toArray()[0], currentTodo);
+                ListOfTodos.getItems().clear();
+                initialize();
+            }
+            else {
+                descriptionField.setText("Entered description was over 256-character limit.");
 
-    @FXML
-    void filterStatus(ActionEvent event) {
-        //Every time filterButton is clicked, program will cycle through various filters: completed, incomplete, all
-        //Program will look through current ArrayList of Maps -> search for Maps with correct "status" value
-        //All filtered results will be added to a temporary ArrayList and populated in ListView
+                if (markCompletedButton.isSelected()) {
+                    newValues.put("status", "true");
+                } else {
+                    newValues.put("status", "false");
+                }
+
+                todoList.put((String) todoList.keySet().toArray()[0], currentTodo);
+                ListOfTodos.getItems().clear();
+                initialize();
+            }
+        }
     }
 }
 
