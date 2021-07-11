@@ -17,8 +17,8 @@ public class file {
         return currentTodoList;
     }
 
-    public static void setCurrentTodoList(String todoList) {
-        for (int i = 0; i < file.bigList.size(); i++) {
+    public static void setCurrentTodoList(String todoList) { //to let program know which todoList is currently being opened
+        for (int i = 0; i < file.bigList.size(); i++) { //loops through ArrayList to find matching todoList and update variable
             LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> temp = file.bigList.get(i);
             String todoListName = (String) temp.keySet().toArray()[0];
             if (todoListName.equals(todoList)) {
@@ -27,7 +27,7 @@ public class file {
         }
     }
 
-    public static void removeTodoList(String todoList) {
+    public static void removeTodoList(String todoList) { //loops through ArrayList to find todoList to remove if name matches
         for (int i = 0; i < bigList.size(); i++) {
             LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> temp = bigList.get(i);
             String todoListName = (String) temp.keySet().toArray()[0];
@@ -37,7 +37,7 @@ public class file {
         }
     }
 
-    public static void addTodoList(String todoListName) {
+    public static void addTodoList(String todoListName) { //ads an empty todoList to ArrayList
         LinkedHashMap<String,LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = new LinkedHashMap<>();
         LinkedHashMap<String, LinkedHashMap<String, String>> todo = new LinkedHashMap<>();
         todoList.put(todoListName, todo);
@@ -48,30 +48,32 @@ public class file {
         File file = new File(filePath);
         Scanner in = null;
         try {
-            in = new Scanner(file);
+            in = new Scanner(file); //reads in file from file path
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to read file.");
+            System.out.println("Unable to read file."); //prints to Run window in IDE if file cannot be read
         }
 
         while (in.hasNextLine()) {
-            LinkedHashMap<String,LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = new LinkedHashMap<>();
+            LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = new LinkedHashMap<>();
             LinkedHashMap<String, LinkedHashMap<String, String>> todo = new LinkedHashMap<>();
-            todoList.put(in.nextLine(), todo);
-            todoLoop: while (in.hasNextLine()) {
-                Scanner lineIn = new Scanner(in.nextLine()); //reads individual characters in current line
+            todoList.put(in.nextLine(), todo); //puts name of list containing individual todos
+            todoLoop: while (in.hasNextLine()) { //scans in individual todos
+                Scanner lineIn = new Scanner(in.nextLine());
                 lineIn.useDelimiter(","); //separates different words using comma
                 while (lineIn.hasNext()) {
                     String temp = lineIn.next();
-                    if (temp.equals("*")) {
+                    if (temp.equals("*")) { //if * is found, scanner will be at end of todoList
                         todoList.put((String) todoList.keySet().toArray()[0], todo);
                         bigList.add(todoList);
                         break todoLoop;
                     }
+
+                    //otherwise, continue scanning in values of individual todos as strings
                     LinkedHashMap<String, String> todoValues = new LinkedHashMap<>();
                     todo.put(temp, todoValues);
                     todoValues.put("status", lineIn.next());
                     String date = lineIn.next();
-                    if (isValidDate(date)) {
+                    if (isValidDate(date)) { //check to see if date is valid
                         todoValues.put("date", date);
                     }
                     else {
@@ -82,36 +84,12 @@ public class file {
             }
         }
 
-        return bigList;
-    }
-
-    public static void printEverything() {
-        System.out.printf("Big List size is %d%n%n", bigList.size());
-        for (int i = 0; i < bigList.size(); i++) {
-            LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = bigList.get(i);
-            String todoListName = (String) todoList.keySet().toArray()[0];
-            System.out.printf("Todo List name is %s%n", todoListName);
-
-            LinkedHashMap<String, LinkedHashMap<String, String>> todo = todoList.get(todoListName);
-            System.out.printf("Todo List size is %d%n%n", todo.size());
-
-            for (int j = 0; j < todo.size(); j++) {
-                String todoName = (String) todo.keySet().toArray()[j];
-                System.out.printf("Name: %s%n", todoName);
-                LinkedHashMap<String, String> todoValues = todo.get(todoName);
-
-                System.out.printf("Date: %s%n", todoValues.get("date"));
-                System.out.printf("Description: %s%n", todoValues.get("description"));
-                System.out.printf("Status: %s%n", todoValues.get("status"));
-
-                System.out.println();
-            }
-        }
+        return bigList; //returns ArrayList
     }
 
     public static String importFile(String filePath) {
         try {
-            file.bigList = file.read(filePath);
+            bigList = read(filePath);
             return "File imported successfully. Please click \"Go Back\" once done.";
         } catch (IOException e) {
             return "Unable to read file";
@@ -119,26 +97,27 @@ public class file {
     }
 
     public static String exportList(String filePath) {
-        StringBuilder content = new StringBuilder();
+        StringBuilder content = new StringBuilder(); //content in new file for exporting
 
         for (int i = 0; i < bigList.size(); i++) {
             LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = bigList.get(i);
             String todoListName = (String) todoList.keySet().toArray()[0];
-            content.append(String.format("%s%n", todoListName));
+            content.append(String.format("%s%n", todoListName)); //name of todoList
             LinkedHashMap<String, LinkedHashMap<String, String>> todo = todoList.get(todoListName);
 
             for (int j = 0; j < todo.size(); j++) {
                 String todoName = (String) todo.keySet().toArray()[j];
-                content.append(String.format("%s,", todoName));
-                LinkedHashMap<String, String> todoValues = todo.get(todoName);
+                content.append(String.format("%s,", todoName)); //name of individual todos
 
+                //values of individual todos
+                LinkedHashMap<String, String> todoValues = todo.get(todoName);
                 content.append(String.format("%s,%s,%s%n", todoValues.get("status"), todoValues.get("date"), todoValues.get("description")));
             }
 
-            content.append("*\n");
+            content.append("*\n"); //* to mark end of todoList
         }
 
-        try {
+        try { //tries to write content and export to new file using file path from user input
             File fileExport = new File(filePath);
             BufferedWriter output = new BufferedWriter(new FileWriter(fileExport));
             output.write(content.toString());
@@ -149,11 +128,11 @@ public class file {
         }
     }
 
-    public static String exportTodo(String filePath) {
+    public static String exportTodo(String filePath) { //exports just a single todoList that is currently being opened
         StringBuilder content = new StringBuilder();
 
         ArrayList<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>>> bigList2 = new ArrayList<>();
-        bigList2.add(editController.getTodoList());
+        bigList2.add(editController.getTodoList()); //creates an empty ArrayList and add current todoList for exporting
 
         for (int i = 0; i < bigList2.size(); i++) {
             LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = bigList2.get(i);
@@ -183,7 +162,7 @@ public class file {
         }
     }
 
-    public static boolean isValidDate(String date) {
+    public static boolean isValidDate(String date) { //check if String is a valid date format using SimpleDateFormat
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         dateFormat.setLenient(false);
         try {
@@ -193,4 +172,29 @@ public class file {
         }
         return true;
     }
+
+    public static void printEverything() { //to check if everything is imported properly.
+        System.out.printf("Big List size is %d%n%n", bigList.size());
+        for (int i = 0; i < bigList.size(); i++) {
+            LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = bigList.get(i);
+            String todoListName = (String) todoList.keySet().toArray()[0];
+            System.out.printf("Todo List name is %s%n", todoListName);
+
+            LinkedHashMap<String, LinkedHashMap<String, String>> todo = todoList.get(todoListName);
+            System.out.printf("Todo List size is %d%n%n", todo.size());
+
+            for (int j = 0; j < todo.size(); j++) {
+                String todoName = (String) todo.keySet().toArray()[j];
+                System.out.printf("Name: %s%n", todoName);
+                LinkedHashMap<String, String> todoValues = todo.get(todoName);
+
+                System.out.printf("Date: %s%n", todoValues.get("date"));
+                System.out.printf("Description: %s%n", todoValues.get("description"));
+                System.out.printf("Status: %s%n", todoValues.get("status"));
+
+                System.out.println();
+            }
+        }
+    }
 }
+

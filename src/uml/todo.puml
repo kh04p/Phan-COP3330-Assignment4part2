@@ -1,12 +1,6 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-class todo
-class mainController
-class openController
-class saveController
-class editController
-
 class todo {
 root = "mainTodo.fxml"
 Scene scene
@@ -17,7 +11,6 @@ changeScene(): takes in specified fxml file name to change window
 todo *-- mainController
 
 class mainController {
-newFile(): creates new .txt file
 openFile(): opens existing .txt file
 exportFile(): exports current file to .txt file
 --
@@ -27,37 +20,44 @@ deleteList(): deletes selected todo list
 }
 
 mainController o- openController: openFile() >
-mainController o-- saveController: exportFile() >
+mainController o-- saveListController: exportFile() >
 
-mainController --|> editController: newList() - openList() >
-editController --|> mainController: saveList() >
+mainController --|> editController: openList() >
+editController --|> file: returns todo lists after making changes
+
+openController --|> file
 
 class editController {
 newTodo(): creates new todo within current list
 deleteTodo(): deletes selected todo
-nameList(): changes name of current todo list
-saveList(): returns current todo list back to mainController
-exportList(): exports list to .txt file
+deleteAll(): delete all todo items
+saveNameList(): saves name of current todo list
+exportList(): exports list to .txt file instead of entire file
 filterStatus(): program will cycle through various filters of completed / incomplete / all
 --
 editTodoName(): changes name of current todo item
-markCompleted(): mark todo item as completed or incomplete
-editDate(): changes due date of todo item
-editDescription(): changes description of todo item
+saveTodoChanges(): program will check and save any changes in due date, status or description of todo item
 }
 
-editController o-- saveController: exportList() >
+editController o-- saveTodoController: exportList() >
 
 class openController {
 Prompts for file path of file to open.
-Passes back file path.
+Reads file into file.java
 }
 
-class saveController {
-Prompts for file path to save .txt file at.
-Passes back file path.
+class saveListController {
+Prompts for file path to save .txt file at for entire file.
+User can hit "Go Back" to get back to mainController.
 }
 
+class saveTodoController {
+Prompts for file path to save .txt file at for only currently opened todo list.
+User can hit "Go Back" to get back to mainController.
+}
 
+class file {
+Will be used to store all data on todo lists and data manipulations.
+}
 
 @enduml

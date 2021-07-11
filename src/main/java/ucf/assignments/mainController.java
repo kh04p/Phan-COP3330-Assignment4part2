@@ -4,6 +4,8 @@
  */
 package ucf.assignments;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -12,26 +14,21 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class mainController {
-    //Limit of 100 lists total
+    private ObservableList<String> nameList = FXCollections.observableArrayList();
 
     @FXML
-    private ListView ListOfTodoList = new ListView();
+    private ListView ListOfTodoList = new ListView(nameList);
 
     @FXML
     public void initialize() {
         ArrayList<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>>> bigList = file.getBigList();
-        int counter = 0;
 
         for (int i = 0; i < bigList.size(); i++) {
-            if (counter > 100) {
-                break;
-            }
             LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = bigList.get(i);
             String todoListName = (String) todoList.keySet().toArray()[0];
-            ListOfTodoList.getItems().add(todoListName);
-            counter++;
+            nameList.add(todoListName);
         }
-
+        ListOfTodoList.setItems(nameList);
         System.out.println(bigList.size());
     }
 

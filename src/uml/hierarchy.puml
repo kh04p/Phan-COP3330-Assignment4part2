@@ -1,0 +1,33 @@
+@startuml
+
+Class bigList{
+ArrayList<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>>>
+----
+Contains multiple todo lists.
+}
+
+Class todoList{
+LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>>
+----
+Contains name of entire todo list as key, and a LinkedHashMap as value (which will contain individual todos).
+}
+
+Class todo{
+LinkedHashMap<String, LinkedHashMap<String, String>>
+----
+Contains name of individual todos and a LinkedHasMap as value (which will contain todo data).
+End of LinkedHashMap will be marked with a * in .txt file.
+}
+
+Class todoValues{
+LinkedHashMap<String, String>
+----
+Contains data of individual todos such as status, due date and description.
+Data will be separated with comma.
+}
+
+bigList --* todoList
+todoList --* todo
+todo --* todoValues
+
+@enduml
