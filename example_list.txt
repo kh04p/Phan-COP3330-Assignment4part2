@@ -1,14 +1,14 @@
-sales
+Supermarket
 buy egg,false,2021-06-01,buy 2 eggs.
 buy apple,true,2021-07-01,buy 5 apples.
 sell lemonade,false,2021-08-05,sell lemonade at $5 each.
 *
-fixing
+Car
 fix wiper blades,false,2020-05-23,refill wiper blades and clean them.
 replace battery,true,2021-06-01,buy another battery at AutoZone.
 refill windshield wiper fluid,true,2021-04-02,refill fluid with rain-x.
 check tire pressure,false,2021-12-05,make sure tire pressure is 37 psi.
 *
-egg
+Egg
 egg,true,2020-05-05,egg?
 *
