@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -23,13 +24,12 @@ public class mainController {
     public void initialize() {
         ArrayList<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>>> bigList = file.getBigList();
 
-        for (int i = 0; i < bigList.size(); i++) {
+        for (int i = 0; i < bigList.size(); i++) { //loops through ArrayList to add todoLists to display
             LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> todoList = bigList.get(i);
             String todoListName = (String) todoList.keySet().toArray()[0];
             nameList.add(todoListName);
         }
         ListOfTodoList.setItems(nameList);
-        System.out.println(bigList.size());
     }
 
     @FXML
@@ -52,15 +52,21 @@ public class mainController {
 
     @FXML
     void openList(ActionEvent event) {
-        String selectedList = (String) ListOfTodoList.getSelectionModel().getSelectedItem();
+        String selectedList = (String) ListOfTodoList.getSelectionModel().getSelectedItem(); //gets name of currently selected item in ListView
         file.setCurrentTodoList(selectedList);
         todo todo = new todo();
         todo.changeScene("editTodo.fxml");
     }
 
     @FXML
-    void deleteList(ActionEvent event) {
+    void deleteList(ActionEvent event) { //removes list from both ArrayList and ListView
         file.removeTodoList((String) ListOfTodoList.getSelectionModel().getSelectedItem());
         ListOfTodoList.getItems().remove(ListOfTodoList.getSelectionModel().getSelectedItem());
+    }
+
+    @FXML
+    void getHelp(ActionEvent event) { //instructions on how to use program
+        todo todo = new todo();
+        todo.changeScene("help.fxml");
     }
 }

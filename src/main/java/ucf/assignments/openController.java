@@ -15,8 +15,8 @@ public class openController {
 
     @FXML
     void openFile(ActionEvent event) {
-        String filePath = fileNameField.getText();
-        fileNameField.setText(file.importFile(filePath));
+        String filePath = fileNameField.getText(); //gets user input for file path
+        fileNameField.setText(file.importFile(filePath)); //returns confirmation on whether file import was successful
     }
 
     @FXML

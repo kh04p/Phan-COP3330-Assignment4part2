@@ -15,8 +15,8 @@ public class saveTodoController {
 
     @FXML
     void saveFile(ActionEvent event) {
-        String filePath = fileNameField.getText();
-        fileNameField.setText(file.exportTodo(filePath));
+        String filePath = fileNameField.getText(); //gets user input for file path
+        fileNameField.setText(file.exportTodo(filePath)); //returns confirmation on whether file import was successful
     }
 
     @FXML

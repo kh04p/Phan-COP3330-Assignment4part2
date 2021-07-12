@@ -177,19 +177,34 @@ public class editController {
 
     @FXML
     void saveTodoChanges(ActionEvent event) {
-        String selectedTodo = (String) ListOfTodos.getSelectionModel().getSelectedItem(); //gets name of currently selected item
-        LinkedHashMap<String, String> newValues = todo.get(selectedTodo); //duplicates values of currently selected item
+        try {
+            String selectedTodo = (String) ListOfTodos.getSelectionModel().getSelectedItem(); //gets name of currently selected item
+            LinkedHashMap<String, String> newValues = todo.get(selectedTodo); //duplicates values of currently selected item
 
-        String newDescription = descriptionField.getText(); //gets new description from user input
-        String newDate = dueDateField.getText(); //gets new date from user input
+            String newDescription = descriptionField.getText(); //gets new description from user input
+            String newDate = dueDateField.getText(); //gets new date from user input
 
-        if (file.isValidDate(newDate)) { //checks if date is in valid format
-            newValues.put("date", newDate);
-            todo.put(selectedTodo, newValues); //updates date field for currently selected item
+            if (file.isValidDate(newDate)) { //checks if date is in valid format
+                newValues.put("date", newDate);
+                todo.put(selectedTodo, newValues); //updates date field for currently selected item
 
-            if (newDescription.length() <= 256 && newDescription.length() >= 1) { //checks if description meets character requirements
-                newValues.put("description", newDescription);
-                todo.put(selectedTodo, newValues); //updates description field for currently selected item
+                if (newDescription.length() <= 256 && newDescription.length() >= 1) { //checks if description meets character requirements
+                    newValues.put("description", newDescription);
+                    todo.put(selectedTodo, newValues); //updates description field for currently selected item
+
+                    if (markCompletedButton.isSelected()) { //checks if checkBox is checked
+                        newValues.put("status", "true"); //updates status field for currently selected item
+                    } else {
+                        newValues.put("status", "false");
+                    }
+
+                    todoList.put((String) todoList.keySet().toArray()[0], todo); //adds all items back into todoList
+                    ListOfTodos.getItems().clear(); //clears ListView
+                    initialize(); //add everything back into ListView
+                }
+                else {
+                    descriptionField.setText("Description has to be between 1 and 256 characters.");
+                }
 
                 if (markCompletedButton.isSelected()) { //checks if checkBox is checked
                     newValues.put("status", "true"); //updates status field for currently selected item
@@ -197,55 +212,50 @@ public class editController {
                     newValues.put("status", "false");
                 }
 
-                todoList.put((String) todoList.keySet().toArray()[0], todo); //adds all items back into todoList
-                ListOfTodos.getItems().clear(); //clears ListView
-                initialize(); //add everything back into ListView
-            }
-            else {
-                descriptionField.setText("Description has to be between 1 and 256 characters.");
-            }
-
-            if (markCompletedButton.isSelected()) { //checks if checkBox is checked
-                newValues.put("status", "true"); //updates status field for currently selected item
-            } else {
-                newValues.put("status", "false");
-            }
-
-            todoList.put((String) todoList.keySet().toArray()[0], todo);
-            ListOfTodos.getItems().clear(); //clears ListView
-            initialize(); //add everything back into ListView
-        }
-        else {
-            dueDateField.setText("Invalid date format.");
-
-            if (newDescription.length() <= 256) {
-                newValues.put("description", newDescription);
-                todo.put(selectedTodo, newValues);
-
-                if (markCompletedButton.isSelected()) {
-                    newValues.put("status", "true");
-                } else {
-                    newValues.put("status", "false");
-                }
-
                 todoList.put((String) todoList.keySet().toArray()[0], todo);
                 ListOfTodos.getItems().clear(); //clears ListView
                 initialize(); //add everything back into ListView
             }
             else {
-                descriptionField.setText("Description has to be between 1 and 256 characters.");
+                dueDateField.setText("Invalid date format.");
 
-                if (markCompletedButton.isSelected()) {
-                    newValues.put("status", "true");
-                } else {
-                    newValues.put("status", "false");
+                if (newDescription.length() <= 256) {
+                    newValues.put("description", newDescription);
+                    todo.put(selectedTodo, newValues);
+
+                    if (markCompletedButton.isSelected()) {
+                        newValues.put("status", "true");
+                    } else {
+                        newValues.put("status", "false");
+                    }
+
+                    todoList.put((String) todoList.keySet().toArray()[0], todo);
+                    ListOfTodos.getItems().clear(); //clears ListView
+                    initialize(); //add everything back into ListView
                 }
+                else {
+                    descriptionField.setText("Description has to be between 1 and 256 characters.");
 
-                todoList.put((String) todoList.keySet().toArray()[0], todo);
-                ListOfTodos.getItems().clear(); //clears ListView
-                initialize(); //add everything back into ListView
+                    if (markCompletedButton.isSelected()) {
+                        newValues.put("status", "true");
+                    } else {
+                        newValues.put("status", "false");
+                    }
+
+                    todoList.put((String) todoList.keySet().toArray()[0], todo);
+                    ListOfTodos.getItems().clear(); //clears ListView
+                    initialize(); //add everything back into ListView
+                }
             }
+        } catch (NullPointerException e) {
+            System.out.println("Unable to update todo values.");
         }
+    }
+
+    @FXML
+    void getHelp(ActionEvent event) {
+        todo todo = new todo();
+        todo.changeScene("help.fxml");
     }
 }
 

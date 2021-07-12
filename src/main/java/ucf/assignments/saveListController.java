@@ -15,8 +15,8 @@ public class saveListController {
 
     @FXML
     void saveFile(ActionEvent event) {
-        String filePath = fileNameField.getText().toString();
-        fileNameField.setText(file.exportList(filePath));
+        String filePath = fileNameField.getText().toString(); //gets user input for file path
+        fileNameField.setText(file.exportList(filePath)); //returns confirmation on whether file import was successful
     }
 
     @FXML
